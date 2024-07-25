@@ -1,0 +1,19 @@
+$controlPlaneCount=ENV.fetch("controlPlaneCount").to_i
+
+Vagrant.configure("2") do |config|
+  (1..$controlPlaneCount).each do |i|
+ config.vm.define "controlPlane#{i}", autostart: true do |controlPlane|
+   controlPlane.vm.provision "shell", path: ENV['initiateControlplane'], :args => ENV['controlPlaneIPs']+"#{i}"
+   controlPlane.vm.box = ENV['linuxBox']
+   controlPlane.vm.synced_folder ".", "/vagrant", disabled: true
+   controlPlane.vm.hostname = ENV['controlPlaneName']+"#{i}"
+   controlPlane.vm.network "public_network", bridge: ENV['ExtSwitchName']
+   controlPlane.vm.provider "hyperv" do |controlPlane|
+      controlPlane.vmname = ENV['controlPlaneName']+"#{i}"
+      controlPlane.cpus = ENV['ExtSwitchName']
+      controlPlane.memory = ENV['memorySize']
+      controlPlane.maxmemory = ENV['memorySize']
+    end
+  end
+end
+end

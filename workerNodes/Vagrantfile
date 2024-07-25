@@ -1,0 +1,19 @@
+$workerCount=ENV.fetch("workerCount").to_i
+
+Vagrant.configure("2") do |config|
+ (1..$workerCount).each do |i|
+ config.vm.define "workerNode#{i}", autostart: true do |workerNode|
+ workerNode.vm.provision "shell", path: ENV['initiateWorker'], :args =>  ENV['workerIPs']+"#{i}"
+   workerNode.vm.box = ENV['linuxBox']
+   workerNode.vm.synced_folder ".", "/vagrant", disabled: true
+   workerNode.vm.hostname = ENV['workerName']+"#{i}"
+   workerNode.vm.network "public_network", bridge: ENV['ExtSwitchName']
+   workerNode.vm.provider "hyperv" do |workerNode|
+      workerNode.vmname = ENV['workerName']+"#{i}"
+      workerNode.cpus = ENV['ExtSwitchName']
+      workerNode.memory = ENV['memorySize']
+      workerNode.maxmemory = ENV['memorySize']
+    end
+  end
+end
+end
