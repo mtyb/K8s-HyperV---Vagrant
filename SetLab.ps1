@@ -40,7 +40,7 @@ $env:workerIPs="$netPrefix" + '24'
 
 ### run Vagrant ###
 if ($mode -eq 'create') {
-  Start-Transcript -Path "./logs.txt" -NoClobber
+  Start-Transcript -Path "./logs.txt" -Force
   Set-Location ./controlPlane
   vagrant up | Out-Host
   Stop-Transcript

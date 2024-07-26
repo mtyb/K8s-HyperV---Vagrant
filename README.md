@@ -8,6 +8,7 @@
 - installs K8s using `KUBEAMD`
 - sets IP Forwarding on all nodes
 - installs Kubelet and Kubectl (ControlPlane only)
+- installs Metrics-Server
 - joins Worker Nodes to Cluster
 
 # SetLab.ps1 overview
